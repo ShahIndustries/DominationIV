@@ -27,7 +27,7 @@ public class Main {
 	public static JFrame menuFrame;
 	public static BoardCanvas canvas;
 	public static Selection selectionPanel;
-	public static WAIT waitPanel;
+	public static Wait waitPanel;
 	public static Planning planningPanel;
 	public static Insets frameInsets;
 	public static int activePlayer = 0;
@@ -46,6 +46,10 @@ public class Main {
 	public static int executionCountdown = 30;
 	
 	private static boolean dialogShown = false;
+	
+	//frame stuff
+	public static int actualScreenX = 600;
+	public static int actualScreenY = 600;
 	
 	public static void main(String[] args) throws InterruptedException
 	{
@@ -69,6 +73,7 @@ public class Main {
 		long currentTime = 0;
 		while(true)
 		{
+			updateCanvasSize();
 			//check for winning
 			boolean blackBase = false;
 			boolean whiteBase = false;
@@ -147,8 +152,7 @@ public class Main {
 		frame.setVisible(true);
 		frame.add(canvas);
 		frameInsets = frame.getInsets();
-		canvas.setBounds(0, frameInsets.top, 600, 600);
-		frame.setSize(600 + 2, frameInsets.top + 600 + 2);
+		updateCanvasSize();
 	}
 	
 	private static void setupMenuFrame()
@@ -158,7 +162,7 @@ public class Main {
 		menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		selectionPanel = new Selection();
 		menuFrame.add(selectionPanel);
-		waitPanel = new WAIT();
+		waitPanel = new Wait();
 		menuFrame.add(waitPanel);
 		planningPanel = new Planning();
 		menuFrame.add(planningPanel);
@@ -244,6 +248,23 @@ public class Main {
 		}
 		updateMenuFrame(PLANNING_PANEL);
 		planningPanel.updateValues();
+	}
+	
+	public static void updateCanvasSize()
+	{
+		int size;
+		//includes borders when calculating size of the canvas
+		actualScreenX = Main.frame.getWidth() - Main.frameInsets.left - Main.frameInsets.right;
+		actualScreenY = Main.frame.getHeight() - Main.frameInsets.top - Main.frameInsets.bottom;
+		if(actualScreenX < actualScreenY)
+		{
+			size = actualScreenX;
+		}
+		else
+		{
+			size = actualScreenY;
+		}
+		Main.canvas.setBounds(Main.frameInsets.left + ((actualScreenX - size) / 2), Main.frameInsets.top + ((actualScreenY - size) / 2), size, size);
 	}
 
 }

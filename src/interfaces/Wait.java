@@ -5,12 +5,12 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import java.awt.Font;
 
-public class WAIT extends JPanel {
+public class Wait extends JPanel {
 
 	/**
 	 * Create the panel.
 	 */
-	public WAIT() {
+	public Wait() {
 		setLayout(null);
 		this.setBounds(0, 0, 300, 200);
 		JLabel lblWait = new JLabel(" WAIT");

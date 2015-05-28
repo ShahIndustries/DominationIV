@@ -7,8 +7,10 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.MouseInfo;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import data.Board;
@@ -30,9 +32,12 @@ public class BoardCanvas extends Canvas{
 	public static final Color BLUE = new Color(0, 0, 255);
 	public static final Color RED = new Color(255, 0, 0);
 	
+	private BufferedImage unresized;
+	
 	public BoardCanvas()
 	{
 		this.addMouseListener(new CanvasListener());
+		unresized = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
 	}
 	
 	public void render(int mode)
@@ -42,7 +47,10 @@ public class BoardCanvas extends Canvas{
 			this.createBufferStrategy(2);
 			bs = this.getBufferStrategy();
 		}
-		Graphics2D g = (Graphics2D) bs.getDrawGraphics();
+		Graphics2D upperG = (Graphics2D) bs.getDrawGraphics();
+		upperG.setRenderingHints(new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC));
+		Graphics2D g = unresized.createGraphics();
+		
 		
 		//draw background
 		g.drawImage(ImportManager.background, 0, 0, null);
@@ -175,6 +183,8 @@ public class BoardCanvas extends Canvas{
 		
 		//buffer stuff
 		g.dispose();
+		upperG.drawImage(unresized, 0, 0, this.getWidth(), this.getHeight(), null);
+		upperG.dispose();
 		bs.show();
 		Toolkit.getDefaultToolkit().sync();
 	}
