@@ -1,5 +1,6 @@
 package importing;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import javax.imageio.ImageIO;
 public class ImportManager {
 	
 	public static BufferedImage box;
+	public static BufferedImage boxGrid;
 	public static BufferedImage boxRed;
 	public static BufferedImage boxYellow;
 	public static BufferedImage boxBlue;
@@ -31,6 +33,7 @@ public class ImportManager {
 		try
 		{
 			box = ImageIO.read(ImportManager.class.getResource("Box.png"));
+			createGrid();
 			boxRed = ImageIO.read(ImportManager.class.getResource("BoxRed.png"));
 			boxYellow = ImageIO.read(ImportManager.class.getResource("BoxYellow.png"));
 			boxBlue = ImageIO.read(ImportManager.class.getResource("BoxBlue.png"));
@@ -53,6 +56,21 @@ public class ImportManager {
 			System.out.println("Failed to load files");
 			System.exit(-1);
 		}
+	}
+	
+	private static void createGrid()
+	{
+		boxGrid = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = boxGrid.createGraphics();
+		//draw grid
+		for(int i = 0; i < 20; i++)
+		{
+			for(int j = 0; j < 20; j++)
+			{
+				g.drawImage(ImportManager.box, i * 30, j * 30, null);
+			}
+		}
+		g.dispose();
 	}
 
 }

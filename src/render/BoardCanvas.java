@@ -48,7 +48,7 @@ public class BoardCanvas extends Canvas{
 			bs = this.getBufferStrategy();
 		}
 		Graphics2D upperG = (Graphics2D) bs.getDrawGraphics();
-		upperG.setRenderingHints(new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC));
+		upperG.setRenderingHints(new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR));
 		Graphics2D g = unresized.createGraphics();
 		
 		
@@ -110,13 +110,8 @@ public class BoardCanvas extends Canvas{
 		}
 		
 		//draw grid
-		for(int i = 0; i < 20; i++)
-		{
-			for(int j = 0; j < 20; j++)
-			{
-				g.drawImage(ImportManager.box, i * 30, j * 30, null);
-			}
-		}
+		g.drawImage(ImportManager.boxGrid, 0, 0, null);
+		
 		if(mode == PLANNING)
 		{
 			//draw highlight
