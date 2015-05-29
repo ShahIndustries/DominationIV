@@ -48,8 +48,7 @@ public class Main {
 	private static boolean dialogShown = false;
 	
 	//frame stuff
-	public static int actualScreenX = 600;
-	public static int actualScreenY = 600;
+	public static float size = 600;
 	
 	public static void main(String[] args) throws InterruptedException
 	{
@@ -252,7 +251,8 @@ public class Main {
 	
 	public static void updateCanvasSize()
 	{
-		int size;
+		int actualScreenX;
+		int actualScreenY;
 		//includes borders when calculating size of the canvas
 		actualScreenX = Main.frame.getWidth() - Main.frameInsets.left - Main.frameInsets.right;
 		actualScreenY = Main.frame.getHeight() - Main.frameInsets.top - Main.frameInsets.bottom;
@@ -264,7 +264,7 @@ public class Main {
 		{
 			size = actualScreenY;
 		}
-		Main.canvas.setBounds(Main.frameInsets.left + ((actualScreenX - size) / 2), Main.frameInsets.top + ((actualScreenY - size) / 2), size, size);
+		Main.canvas.setBounds(Main.frameInsets.left + ((actualScreenX - (int)size) / 2), Main.frameInsets.top + ((actualScreenY - (int)size) / 2), (int)size, (int)size);
 	}
 
 }

@@ -163,8 +163,8 @@ public class BoardCanvas extends Canvas{
 			//draw cursor
 			if(Main.gameBoard.highlightPlan != Board.NONE && Main.selectedUnit != null)
 			{
-				int xPos = (MouseInfo.getPointerInfo().getLocation().x - this.getLocationOnScreen().x) / 30;
-				int yPos = (MouseInfo.getPointerInfo().getLocation().y - this.getLocationOnScreen().y) / 30;
+				int xPos = (int) (((MouseInfo.getPointerInfo().getLocation().x - this.getLocationOnScreen().x) * (600 / Main.size)) / 30);
+				int yPos = (int) (((MouseInfo.getPointerInfo().getLocation().y - this.getLocationOnScreen().y) * (600 / Main.size)) / 30);
 				if(xPos >= 0 && xPos <= 19 && yPos >= 0 && yPos <= 19)
 				{
 					Main.cursor.x = xPos;

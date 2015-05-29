@@ -34,8 +34,8 @@ public class CanvasListener extends MouseAdapter{
 	
 	private void selectUnit(MouseEvent e)
 	{
-		int x = (e.getX() / 30);
-		int y = (e.getY() / 30);
+		int x = (int) ((e.getX() *(600 / Main.size)) / 30);
+		int y = (int) ((e.getY() *(600 / Main.size)) / 30);
 		Unit tempUnit;
 		if(Main.gameBoard.isBoxTaken(x, y))
 		{
