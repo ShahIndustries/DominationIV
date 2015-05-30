@@ -32,12 +32,16 @@ public class BoardCanvas extends Canvas{
 	public static final Color BLUE = new Color(0, 0, 255);
 	public static final Color RED = new Color(255, 0, 0);
 	
+	//canvas size
+	public static final int CANVAS_SIZE = 1200;
+	public static final int BOX_SIZE = CANVAS_SIZE / 20;
+	
 	private BufferedImage unresized;
 	
 	public BoardCanvas()
 	{
 		this.addMouseListener(new CanvasListener());
-		unresized = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
+		unresized = new BufferedImage(CANVAS_SIZE, CANVAS_SIZE, BufferedImage.TYPE_INT_ARGB);
 	}
 	
 	public void render(int mode)
@@ -63,11 +67,11 @@ public class BoardCanvas extends Canvas{
 			{
 				//unit
 				tempUnit = Main.gameBoard.units.get(i);
-				g.drawImage(tempUnit.icon, tempUnit.xPos * 30, tempUnit.yPos * 30, null);
+				g.drawImage(tempUnit.icon, tempUnit.xPos * BOX_SIZE, tempUnit.yPos * BOX_SIZE, null);
 				
 				//health
 				g.setColor(new Color(0, 255, 0));
-				g.fillRect((tempUnit.xPos * 30) + 2, (tempUnit.yPos * 30) + 24, getHealthWidth(tempUnit), 4);
+				g.fillRect((tempUnit.xPos * BOX_SIZE) + (BOX_SIZE / 15), (tempUnit.yPos * BOX_SIZE) + (int)(BOX_SIZE * 0.8f), getHealthWidth(tempUnit), (int)(BOX_SIZE * (4f / 30f)));
 			}
 		}
 		else
@@ -79,32 +83,32 @@ public class BoardCanvas extends Canvas{
 				tempUnit = Main.gameBoard.units.get(i);
 				if(tempUnit.currentPlan == null)
 				{
-					g.drawImage(tempUnit.icon, tempUnit.xPos * 30, tempUnit.yPos * 30, null);
+					g.drawImage(tempUnit.icon, tempUnit.xPos * BOX_SIZE, tempUnit.yPos * BOX_SIZE, null);
 					
 					//health
 					g.setColor(new Color(0, 255, 0));
-					g.fillRect((tempUnit.xPos * 30) + 2, (tempUnit.yPos * 30) + 24, getHealthWidth(tempUnit), 4);
+					g.fillRect((tempUnit.xPos * BOX_SIZE) + (BOX_SIZE / 15), (tempUnit.yPos * BOX_SIZE) + (int)(BOX_SIZE * 0.8f), getHealthWidth(tempUnit), (int)(BOX_SIZE * (4f / 30f)));
 				}
 				else if(tempUnit.currentPlan.typeOfPlan == Plan.MOVE)
 				{
-					g.drawImage(tempUnit.icon, (int)(tempUnit.currentPlan.perciseX * 30.0f), (int)(tempUnit.currentPlan.perciseY * 30.0f), null);
+					g.drawImage(tempUnit.icon, (int)(tempUnit.currentPlan.perciseX * (float)BOX_SIZE), (int)(tempUnit.currentPlan.perciseY * (float)BOX_SIZE), null);
 					
 					//health
 					g.setColor(new Color(0, 255, 0));
-					g.fillRect((int) ((tempUnit.currentPlan.perciseX * 30.0f) + 2), (int) ((tempUnit.currentPlan.perciseY * 30.0f) + 24), getHealthWidth(tempUnit), 4);
+					g.fillRect((int) ((tempUnit.currentPlan.perciseX * (float)BOX_SIZE) + (BOX_SIZE / 15)), (int) ((tempUnit.currentPlan.perciseY * (float)BOX_SIZE) + (BOX_SIZE * 0.8f)), getHealthWidth(tempUnit), (int)(BOX_SIZE * (4f / 30f)));
 				}
 				else
 				{
 					//attacking
-					g.drawImage(tempUnit.icon, tempUnit.xPos * 30, tempUnit.yPos * 30, null);
+					g.drawImage(tempUnit.icon, tempUnit.xPos * BOX_SIZE, tempUnit.yPos * BOX_SIZE, null);
 					
 					//health
 					g.setColor(new Color(0, 255, 0));
-					g.fillRect((tempUnit.xPos * 30) + 2, (tempUnit.yPos * 30) + 24, getHealthWidth(tempUnit), 4);
+					g.fillRect((tempUnit.xPos * BOX_SIZE) + (BOX_SIZE / 15), (tempUnit.yPos * BOX_SIZE) + (int)(BOX_SIZE * 0.8f), getHealthWidth(tempUnit), (int)(BOX_SIZE * (4f / 30f)));
 					
 					//attacking projectile
 					g.setColor(RED);
-					g.fillRect((int) ((tempUnit.currentPlan.perciseX * 30.0f) + 12), (int) ((tempUnit.currentPlan.perciseY * 30.0f) + 12), 6, 6);
+					g.fillRect((int) ((tempUnit.currentPlan.perciseX * (float)BOX_SIZE) + (BOX_SIZE * 0.4f)), (int) ((tempUnit.currentPlan.perciseY * (float)BOX_SIZE) + (BOX_SIZE * 0.4f)), (int)(BOX_SIZE * 0.2f), (int)(BOX_SIZE * 0.2f));
 				}
 			}
 		}
@@ -127,7 +131,7 @@ public class BoardCanvas extends Canvas{
 					{
 					if(x + Main.selectedUnit.xPos >= 0 && x + Main.selectedUnit.xPos <= 19 && y + Main.selectedUnit.yPos >= 0 && y + Main.selectedUnit.yPos <= 19)
 					{
-						g.drawImage(ImportManager.boxYellow, (x + Main.selectedUnit.xPos) * 30, (y + Main.selectedUnit.yPos) * 30, null);
+						g.drawImage(ImportManager.boxYellow, (x + Main.selectedUnit.xPos) * BOX_SIZE, (y + Main.selectedUnit.yPos) * BOX_SIZE, null);
 					}
 					}
 				}
@@ -142,15 +146,15 @@ public class BoardCanvas extends Canvas{
 					//draw square and line
 					if(tempUnit.currentPlan.typeOfPlan == Plan.MOVE)
 					{
-						g.drawImage(ImportManager.boxBlue, tempUnit.currentPlan.x * 30, tempUnit.currentPlan.y * 30, null);
+						g.drawImage(ImportManager.boxBlue, tempUnit.currentPlan.x * BOX_SIZE, tempUnit.currentPlan.y * BOX_SIZE, null);
 						g.setColor(BLUE);
-						g.drawLine((tempUnit.xPos * 30) + 15, (tempUnit.yPos * 30) + 15, (tempUnit.currentPlan.x * 30) + 15, (tempUnit.currentPlan.y * 30) + 15);
+						g.drawLine((tempUnit.xPos * BOX_SIZE) + (int)(BOX_SIZE * 0.5f), (tempUnit.yPos * BOX_SIZE) + (int)(BOX_SIZE * 0.5f), (tempUnit.currentPlan.x * BOX_SIZE) + (int)(BOX_SIZE * 0.5f), (tempUnit.currentPlan.y * BOX_SIZE) + (int)(BOX_SIZE * 0.5f));
 					}
 					else
 					{
-						g.drawImage(ImportManager.boxRed, tempUnit.currentPlan.x * 30, tempUnit.currentPlan.y * 30, null);
+						g.drawImage(ImportManager.boxRed, tempUnit.currentPlan.x * BOX_SIZE, tempUnit.currentPlan.y * BOX_SIZE, null);
 						g.setColor(RED);
-						g.drawLine((tempUnit.xPos * 30) + 15, (tempUnit.yPos * 30) + 15, (tempUnit.currentPlan.x * 30) + 15, (tempUnit.currentPlan.y * 30) + 15);
+						g.drawLine((tempUnit.xPos * BOX_SIZE) + (int)(BOX_SIZE * 0.5f), (tempUnit.yPos * BOX_SIZE) + (int)(BOX_SIZE * 0.5f), (tempUnit.currentPlan.x * BOX_SIZE) + (int)(BOX_SIZE * 0.5f), (tempUnit.currentPlan.y * BOX_SIZE) + (int)(BOX_SIZE * 0.5f));
 					}
 				}
 			}
@@ -158,8 +162,8 @@ public class BoardCanvas extends Canvas{
 			//draw cursor
 			if(Main.gameBoard.highlightPlan != Board.NONE && Main.selectedUnit != null)
 			{
-				int xPos = (int) (((MouseInfo.getPointerInfo().getLocation().x - this.getLocationOnScreen().x) * (600 / Main.size)) / 30);
-				int yPos = (int) (((MouseInfo.getPointerInfo().getLocation().y - this.getLocationOnScreen().y) * (600 / Main.size)) / 30);
+				int xPos = (int) (((MouseInfo.getPointerInfo().getLocation().x - this.getLocationOnScreen().x) * (CANVAS_SIZE / Main.size)) / BOX_SIZE);
+				int yPos = (int) (((MouseInfo.getPointerInfo().getLocation().y - this.getLocationOnScreen().y) * (CANVAS_SIZE / Main.size)) / BOX_SIZE);
 				if(xPos >= 0 && xPos <= 19 && yPos >= 0 && yPos <= 19)
 				{
 					Main.cursor.x = xPos;
@@ -167,11 +171,11 @@ public class BoardCanvas extends Canvas{
 				}
 				if(Main.gameBoard.highlightPlan == Board.MOVE)
 				{
-					g.drawImage(ImportManager.boxBlue, Main.cursor.x * 30, Main.cursor.y * 30, null);
+					g.drawImage(ImportManager.boxBlue, Main.cursor.x * BOX_SIZE, Main.cursor.y * BOX_SIZE, null);
 				}
 				else if(Main.gameBoard.highlightPlan == Board.ATTACK)
 				{
-					g.drawImage(ImportManager.boxRed, Main.cursor.x * 30, Main.cursor.y * 30, null);
+					g.drawImage(ImportManager.boxRed, Main.cursor.x * BOX_SIZE, Main.cursor.y * BOX_SIZE, null);
 				}
 			}
 		}
@@ -187,7 +191,7 @@ public class BoardCanvas extends Canvas{
 	private static int getHealthWidth(Unit u)
 	{
 		float percent = ((float)u.hp / (float)u.maxHP);
-		return (int) (percent * 26);
+		return (int) (percent * (26f / 30f) * BOX_SIZE);
 	}
 	
 	public static ArrayList<Point> getSelectionArray()

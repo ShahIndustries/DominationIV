@@ -7,6 +7,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import render.BoardCanvas;
+import render.RenderUtils;
+
 public class ImportManager {
 	
 	public static BufferedImage box;
@@ -30,47 +33,63 @@ public class ImportManager {
 	
 	public static void load()
 	{
-		try
-		{
-			box = ImageIO.read(ImportManager.class.getResource("Box.png"));
-			createGrid();
-			boxRed = ImageIO.read(ImportManager.class.getResource("BoxRed.png"));
-			boxYellow = ImageIO.read(ImportManager.class.getResource("BoxYellow.png"));
-			boxBlue = ImageIO.read(ImportManager.class.getResource("BoxBlue.png"));
-			advancedUnit = ImageIO.read(ImportManager.class.getResource("AdvancedUnit.png"));
-			advancedUnitWhite = ImageIO.read(ImportManager.class.getResource("AdvancedUnitWhite.png"));
-			mainUnit = ImageIO.read(ImportManager.class.getResource("MainUnit.png"));
-			mainUnitWhite = ImageIO.read(ImportManager.class.getResource("MainUnitWhite.png"));
-			background = ImageIO.read(ImportManager.class.getResource("Background.png"));
-			base = ImageIO.read(ImportManager.class.getResource("Base.png"));
-			baseWhite = ImageIO.read(ImportManager.class.getResource("BaseWhite.png"));
-			howitzer = ImageIO.read(ImportManager.class.getResource("Howitzer.png"));
-			howitzerWhite = ImageIO.read(ImportManager.class.getResource("HowitzerWhite.png"));
+		//set resizing of original images to highest quality
+		RenderUtils.highQuality = true;
+		
+		box = fetchImage("Box.png");
+		createGrid();
+		boxRed = fetchImage("BoxRed.png");
+		boxYellow = fetchImage("BoxYellow.png");
+		boxBlue = fetchImage("BoxBlue.png");
+		advancedUnit = fetchImage("AdvancedUnit.png");
+		advancedUnitWhite = fetchImage("AdvancedUnitWhite.png");
+		mainUnit = fetchImage("MainUnit.png");
+		mainUnitWhite = fetchImage("MainUnitWhite.png");
+		base = fetchImage("Base.png");
+		baseWhite = fetchImage("BaseWhite.png");
+		howitzer = fetchImage("Howitzer.png");
+		howitzerWhite = fetchImage("HowitzerWhite.png");
+		
+		//unusual sized images
+		try {
+			background = RenderUtils.resize(ImageIO.read(ImportManager.class.getResource("Background.png")), BoardCanvas.CANVAS_SIZE, BoardCanvas.CANVAS_SIZE);
 			
-			mainUnitIcon = ImageIO.read(ImportManager.class.getResource("MainUnit.png"));
-			advancedUnitIcon = ImageIO.read(ImportManager.class.getResource("AdvancedUnit.png"));
-			howitzerIcon = ImageIO.read(ImportManager.class.getResource("Howitzer.png"));
-		}
-		catch (IOException e)
-		{
+			mainUnitIcon = RenderUtils.resize(ImageIO.read(ImportManager.class.getResource("MainUnit.png")), 30, 30);
+			advancedUnitIcon = RenderUtils.resize(ImageIO.read(ImportManager.class.getResource("AdvancedUnit.png")), 30, 30);
+			howitzerIcon = RenderUtils.resize(ImageIO.read(ImportManager.class.getResource("Howitzer.png")), 30, 30);
+		} catch (IOException e) {
 			System.out.println("Failed to load files");
 			System.exit(-1);
 		}
+		
+		//set quality back to normal
+		RenderUtils.highQuality = false;
 	}
 	
 	private static void createGrid()
 	{
-		boxGrid = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
+		boxGrid = new BufferedImage(BoardCanvas.CANVAS_SIZE, BoardCanvas.CANVAS_SIZE, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = boxGrid.createGraphics();
 		//draw grid
 		for(int i = 0; i < 20; i++)
 		{
 			for(int j = 0; j < 20; j++)
 			{
-				g.drawImage(ImportManager.box, i * 30, j * 30, null);
+				g.drawImage(ImportManager.box, i * BoardCanvas.BOX_SIZE, j * BoardCanvas.BOX_SIZE, null);
 			}
 		}
 		g.dispose();
+	}
+	
+	private static BufferedImage fetchImage(String s)
+	{
+		try {
+			return RenderUtils.resize(ImageIO.read(ImportManager.class.getResource(s)), BoardCanvas.BOX_SIZE, BoardCanvas.BOX_SIZE);
+		} catch (IOException e) {
+			System.out.println("Failed to load files");
+			System.exit(-1);
+		}
+		return null;
 	}
 
 }
