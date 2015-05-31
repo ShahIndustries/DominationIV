@@ -59,7 +59,7 @@ public class Main {
 		//game setup
 		for(int i = 0; i < 2; i++)
 		{
-			players[i] = new Player(i, 2000);
+			players[i] = new Player(i, 6000);
 		}
 		gameBoard.addBases();
 		SelectionArrays.fillArrays();
