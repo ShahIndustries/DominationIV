@@ -18,6 +18,7 @@ import data.Point;
 import data.SelectionArrays;
 import listeners.CanvasListener;
 import units.AdvancedUnit;
+import units.ControlPoint;
 import units.HowitzerUnit;
 import units.MainUnit;
 import units.Plan;
@@ -33,7 +34,7 @@ public class BoardCanvas extends Canvas{
 	public static final Color RED = new Color(255, 0, 0);
 	
 	//canvas size
-	public static final int CANVAS_SIZE = 1200;
+	public static final int CANVAS_SIZE = 1000;
 	public static final int BOX_SIZE = CANVAS_SIZE / 20;
 	
 	private BufferedImage unresized;
@@ -60,6 +61,7 @@ public class BoardCanvas extends Canvas{
 		g.drawImage(ImportManager.background, 0, 0, null);
 		
 		Unit tempUnit;
+		ControlPoint tempCP;
 		if(mode == PLANNING)
 		{
 			//draw units planning
@@ -87,7 +89,7 @@ public class BoardCanvas extends Canvas{
 					
 					//health
 					g.setColor(new Color(0, 255, 0));
-					g.fillRect((tempUnit.xPos * BOX_SIZE) + (BOX_SIZE / 15), (tempUnit.yPos * BOX_SIZE) + (int)(BOX_SIZE * 0.8f), getHealthWidth(tempUnit), (int)(BOX_SIZE * (4f / 30f)));
+					g.fillRect((tempUnit.xPos * BOX_SIZE) + (BOX_SIZE / 15), (tempUnit.yPos * BOX_SIZE) + (int)(BOX_SIZE * 0.82f), getHealthWidth(tempUnit), (int)(BOX_SIZE * (4f / 30f)));
 				}
 				else if(tempUnit.currentPlan.typeOfPlan == Plan.MOVE)
 				{
@@ -95,7 +97,7 @@ public class BoardCanvas extends Canvas{
 					
 					//health
 					g.setColor(new Color(0, 255, 0));
-					g.fillRect((int) ((tempUnit.currentPlan.perciseX * (float)BOX_SIZE) + (BOX_SIZE / 15)), (int) ((tempUnit.currentPlan.perciseY * (float)BOX_SIZE) + (BOX_SIZE * 0.8f)), getHealthWidth(tempUnit), (int)(BOX_SIZE * (4f / 30f)));
+					g.fillRect((int) ((tempUnit.currentPlan.perciseX * (float)BOX_SIZE) + (BOX_SIZE / 15)), (int) ((tempUnit.currentPlan.perciseY * (float)BOX_SIZE) + (BOX_SIZE * 0.82f)), getHealthWidth(tempUnit), (int)(BOX_SIZE * (4f / 30f)));
 				}
 				else
 				{
@@ -104,13 +106,28 @@ public class BoardCanvas extends Canvas{
 					
 					//health
 					g.setColor(new Color(0, 255, 0));
-					g.fillRect((tempUnit.xPos * BOX_SIZE) + (BOX_SIZE / 15), (tempUnit.yPos * BOX_SIZE) + (int)(BOX_SIZE * 0.8f), getHealthWidth(tempUnit), (int)(BOX_SIZE * (4f / 30f)));
+					g.fillRect((tempUnit.xPos * BOX_SIZE) + (BOX_SIZE / 15), (tempUnit.yPos * BOX_SIZE) + (int)(BOX_SIZE * 0.82f), getHealthWidth(tempUnit), (int)(BOX_SIZE * (4f / 30f)));
 					
 					//attacking projectile
 					g.setColor(RED);
 					g.fillRect((int) ((tempUnit.currentPlan.perciseX * (float)BOX_SIZE) + (BOX_SIZE * 0.4f)), (int) ((tempUnit.currentPlan.perciseY * (float)BOX_SIZE) + (BOX_SIZE * 0.4f)), (int)(BOX_SIZE * 0.2f), (int)(BOX_SIZE * 0.2f));
 				}
 			}
+		}
+		
+		//draw control points
+		for(int i =0; i < Main.gameBoard.controlPoints.size(); i++)
+		{
+			tempCP = Main.gameBoard.controlPoints.get(i);
+			
+			//control point icon
+			g.drawImage(tempCP.icon, tempCP.xPos * BOX_SIZE, tempCP.yPos * BOX_SIZE, null);
+			
+			//control point bias
+			g.setColor(Color.WHITE);
+			g.fillRect((tempCP.xPos * BOX_SIZE) + (BOX_SIZE / 15), (tempCP.yPos * BOX_SIZE) + (int)(BOX_SIZE * 0.82f), getWhiteBiasWidth(tempCP), (int)(BOX_SIZE * (4f / 30f)));
+			g.setColor(Color.BLACK);
+			g.fillRect((tempCP.xPos * BOX_SIZE) + (BOX_SIZE / 15) + getWhiteBiasWidth(tempCP), (tempCP.yPos * BOX_SIZE) + (int)(BOX_SIZE * 0.82f), getBlackBiasWidth(tempCP), (int)(BOX_SIZE * (4f / 30f)));
 		}
 		
 		//draw grid
@@ -191,7 +208,19 @@ public class BoardCanvas extends Canvas{
 	private static int getHealthWidth(Unit u)
 	{
 		float percent = ((float)u.hp / (float)u.maxHP);
-		return (int) (percent * (26f / 30f) * BOX_SIZE);
+		return (int) (percent * (27f / 30f) * BOX_SIZE);
+	}
+	
+	private static int getWhiteBiasWidth(ControlPoint u)
+	{
+		float percent = ((float)(u.playerBias + 2f) / 4f);
+		return (int) (percent * (27f / 30f) * BOX_SIZE);
+	}
+	
+	private static int getBlackBiasWidth(ControlPoint u)
+	{
+		float percent = ((float)(u.playerBias + 2f) / 4f);
+		return (int) ((1f - percent) * (27f / 30f) * BOX_SIZE);
 	}
 	
 	public static ArrayList<Point> getSelectionArray()

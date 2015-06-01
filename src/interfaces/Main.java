@@ -31,6 +31,7 @@ public class Main {
 	public static Planning planningPanel;
 	public static Insets frameInsets;
 	public static int activePlayer = 0;
+	//Player 0 is black, player 1 is white
 	public static Player[] players = new Player[2];
 	public static Board gameBoard = new Board();
 	public static int currentFrame;
@@ -59,9 +60,9 @@ public class Main {
 		//game setup
 		for(int i = 0; i < 2; i++)
 		{
-			players[i] = new Player(i, 6000);
+			players[i] = new Player(i, Player.STARTING_MONEY);
 		}
-		gameBoard.addBases();
+		gameBoard.addBasesAndControlPoints();
 		SelectionArrays.fillArrays();
 		
 		//menu setup
@@ -129,6 +130,9 @@ public class Main {
 				if(executionCountdown == 0)
 				{
 					endExecution();
+					gameBoard.calculateControlPointValues();
+					updateMenuFrame(PLANNING_PANEL);
+					planningPanel.updateValues();
 				}
 				
 			}
@@ -236,7 +240,7 @@ public class Main {
 				}
 			}
 		}
-		Main.players[Main.activePlayer].money += 400;
+		Main.players[Main.activePlayer].money += Player.MONEY_PER_TURN;
 		if(Main.activePlayer == 0)
 		{
 			Main.activePlayer = 1;
@@ -245,8 +249,6 @@ public class Main {
 		{
 			Main.activePlayer = 0;
 		}
-		updateMenuFrame(PLANNING_PANEL);
-		planningPanel.updateValues();
 	}
 	
 	public static void updateCanvasSize()

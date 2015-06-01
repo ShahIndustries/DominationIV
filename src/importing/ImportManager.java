@@ -26,6 +26,7 @@ public class ImportManager {
 	public static BufferedImage baseWhite;
 	public static BufferedImage howitzer;
 	public static BufferedImage howitzerWhite;
+	public static BufferedImage controlPoint;
 	
 	public static Image mainUnitIcon;
 	public static Image advancedUnitIcon;
@@ -49,6 +50,7 @@ public class ImportManager {
 		baseWhite = fetchImage("BaseWhite.png");
 		howitzer = fetchImage("Howitzer.png");
 		howitzerWhite = fetchImage("HowitzerWhite.png");
+		controlPoint = fetchImage("ControlPointGray.png");
 		
 		//unusual sized images
 		try {

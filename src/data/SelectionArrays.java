@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class SelectionArrays {
 	
+	public static ArrayList<Point> controlPointCapture = new ArrayList<Point>();
+	
 	public static ArrayList<Point> mainMove = new ArrayList<Point>();
 	public static ArrayList<Point> mainAttack = new ArrayList<Point>();
 	public static ArrayList<Point> advancedMove = new ArrayList<Point>();
@@ -21,6 +23,8 @@ public class SelectionArrays {
 		
 		howitzerMove = getCircularArray(1f);
 		howitzerAttack = getCircularArray(6.5f);
+		
+		controlPointCapture = getCircularArray(1.5f);
 	}
 	
 	//generate circular selection arrays

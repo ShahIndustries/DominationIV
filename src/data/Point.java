@@ -1,6 +1,5 @@
 package data;
 
-//generic point class
 public class Point{
 	
 	public int x;
