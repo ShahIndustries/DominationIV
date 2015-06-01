@@ -63,15 +63,6 @@ public class Board {
 	{
 		//black player base
 		units.add(new BaseUnit(0, 3, 0));
-<<<<<<< HEAD
-		units.add(new AdvancedUnit(0, 6, 7));
-		units.add(new HowitzerUnit(0, 4, 0));
-		//second player base
-		units.add(new BaseUnit(1, 3, 19));
-		units.add(new AdvancedUnit(1, 4, 12));
-		units.add(new HowitzerUnit(1, 10, 10));
-		
-=======
 		
 		//white player base
 		units.add(new BaseUnit(1, 3, 19));
@@ -81,7 +72,6 @@ public class Board {
 		
 		//control point: Malachi
 		controlPoints.add(new ControlPoint(15, 12));
->>>>>>> origin/master
 	}
 	
 	public boolean validSelection(int inputX, int inputY, int mode)
