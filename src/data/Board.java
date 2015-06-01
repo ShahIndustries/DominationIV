@@ -8,14 +8,17 @@ import java.util.ArrayList;
 import render.BoardCanvas;
 import units.AdvancedUnit;
 import units.BaseUnit;
+import units.ControlPoint;
 import units.HowitzerUnit;
 import units.MainUnit;
+import units.MovableUnit;
 import units.Plan;
 import units.Unit;
 
 public class Board {
 	
 	public ArrayList<Unit> units = new ArrayList<Unit>();
+	public ArrayList<ControlPoint> controlPoints = new ArrayList<ControlPoint>();
 	public int highlightPlan = 0;
 	
 	public static final int NONE = 0;
@@ -56,10 +59,11 @@ public class Board {
 	}
 	
 	//call at setup
-	public void addBases()
+	public void addBasesAndControlPoints()
 	{
-		//first player base
+		//black player base
 		units.add(new BaseUnit(0, 3, 0));
+<<<<<<< HEAD
 		units.add(new AdvancedUnit(0, 6, 7));
 		units.add(new HowitzerUnit(0, 4, 0));
 		//second player base
@@ -67,6 +71,17 @@ public class Board {
 		units.add(new AdvancedUnit(1, 4, 12));
 		units.add(new HowitzerUnit(1, 10, 10));
 		
+=======
+		
+		//white player base
+		units.add(new BaseUnit(1, 3, 19));
+		
+		//control point: Iglesias
+		controlPoints.add(new ControlPoint(15, 7));
+		
+		//control point: Malachi
+		controlPoints.add(new ControlPoint(15, 12));
+>>>>>>> origin/master
 	}
 	
 	public boolean validSelection(int inputX, int inputY, int mode)
@@ -89,5 +104,56 @@ public class Board {
 			}
 		}
 		return works;
+	}
+	
+	public void calculateControlPointValues()
+	{
+		ControlPoint tempCP;
+		int changeInBias;
+		for(int i = 0; i < this.controlPoints.size(); i++)
+		{
+			tempCP = this.controlPoints.get(i);
+			changeInBias = 0;
+			
+			//give money where it's due
+			if(tempCP.playerBias == -2)
+			{
+				Main.players[0].money += ControlPoint.MONEY_PER_TURN;
+			}
+			else if(tempCP.playerBias == 2)
+			{
+				Main.players[1].money += ControlPoint.MONEY_PER_TURN;
+			}
+			
+			//look for nearby units
+			for(int j = 0; j < SelectionArrays.controlPointCapture.size(); j++)
+			{
+				if(this.isBoxTaken(tempCP.xPos + SelectionArrays.controlPointCapture.get(j).x, tempCP.yPos + SelectionArrays.controlPointCapture.get(j).y))
+				{
+					if(this.getUnitAt(tempCP.xPos + SelectionArrays.controlPointCapture.get(j).x, tempCP.yPos + SelectionArrays.controlPointCapture.get(j).y) instanceof MovableUnit)
+					{
+						if(this.getUnitAt(tempCP.xPos + SelectionArrays.controlPointCapture.get(j).x, tempCP.yPos + SelectionArrays.controlPointCapture.get(j).y).playerOwnerID == 0)
+						{
+							changeInBias--;
+						}
+						else
+						{
+							changeInBias++;
+						}
+					}
+				}
+			}
+			
+			//adjust bias accordingly
+			tempCP.playerBias += changeInBias;
+			if(tempCP.playerBias < -2)
+			{
+				tempCP.playerBias = -2;
+			}
+			else if(tempCP.playerBias > 2)
+			{
+				tempCP.playerBias = 2;
+			}
+		}
 	}
 }

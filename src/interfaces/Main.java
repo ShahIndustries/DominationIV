@@ -27,10 +27,11 @@ public class Main {
 	public static JFrame menuFrame;
 	public static BoardCanvas canvas;
 	public static Selection selectionPanel;
-	public static WAIT waitPanel;
+	public static Wait waitPanel;
 	public static Planning planningPanel;
 	public static Insets frameInsets;
 	public static int activePlayer = 0;
+	//Player 0 is black, player 1 is white
 	public static Player[] players = new Player[2];
 	public static Board gameBoard = new Board();
 	public static int currentFrame;
@@ -47,6 +48,9 @@ public class Main {
 	
 	private static boolean dialogShown = false;
 	
+	//frame stuff
+	public static float size = 600;
+	
 	public static void main(String[] args) throws InterruptedException
 	{
 
@@ -56,9 +60,9 @@ public class Main {
 		//game setup
 		for(int i = 0; i < 2; i++)
 		{
-			players[i] = new Player(i, 2000);
+			players[i] = new Player(i, Player.STARTING_MONEY);
 		}
-		gameBoard.addBases();
+		gameBoard.addBasesAndControlPoints();
 		SelectionArrays.fillArrays();
 		
 		//menu setup
@@ -69,6 +73,7 @@ public class Main {
 		long currentTime = 0;
 		while(true)
 		{
+			updateCanvasSize();
 			//check for winning
 			boolean blackBase = false;
 			boolean whiteBase = false;
@@ -125,6 +130,9 @@ public class Main {
 				if(executionCountdown == 0)
 				{
 					endExecution();
+					gameBoard.calculateControlPointValues();
+					updateMenuFrame(PLANNING_PANEL);
+					planningPanel.updateValues();
 				}
 				
 			}
@@ -147,8 +155,7 @@ public class Main {
 		frame.setVisible(true);
 		frame.add(canvas);
 		frameInsets = frame.getInsets();
-		canvas.setBounds(0, frameInsets.top, 600, 600);
-		frame.setSize(600 + 2, frameInsets.top + 600 + 2);
+		updateCanvasSize();
 	}
 	
 	private static void setupMenuFrame()
@@ -158,7 +165,7 @@ public class Main {
 		menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		selectionPanel = new Selection();
 		menuFrame.add(selectionPanel);
-		waitPanel = new WAIT();
+		waitPanel = new Wait();
 		menuFrame.add(waitPanel);
 		planningPanel = new Planning();
 		menuFrame.add(planningPanel);
@@ -233,7 +240,7 @@ public class Main {
 				}
 			}
 		}
-		Main.players[Main.activePlayer].money += 400;
+		Main.players[Main.activePlayer].money += Player.MONEY_PER_TURN;
 		if(Main.activePlayer == 0)
 		{
 			Main.activePlayer = 1;
@@ -242,8 +249,24 @@ public class Main {
 		{
 			Main.activePlayer = 0;
 		}
-		updateMenuFrame(PLANNING_PANEL);
-		planningPanel.updateValues();
+	}
+	
+	public static void updateCanvasSize()
+	{
+		int actualScreenX;
+		int actualScreenY;
+		//includes borders when calculating size of the canvas
+		actualScreenX = Main.frame.getWidth() - Main.frameInsets.left - Main.frameInsets.right;
+		actualScreenY = Main.frame.getHeight() - Main.frameInsets.top - Main.frameInsets.bottom;
+		if(actualScreenX < actualScreenY)
+		{
+			size = actualScreenX;
+		}
+		else
+		{
+			size = actualScreenY;
+		}
+		Main.canvas.setBounds(Main.frameInsets.left + ((actualScreenX - (int)size) / 2), Main.frameInsets.top + ((actualScreenY - (int)size) / 2), (int)size, (int)size);
 	}
 
 }

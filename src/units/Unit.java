@@ -8,7 +8,7 @@ public class Unit {
 	
 	public int maxHP;
 	public int hp;
-	public Image icon;
+	public BufferedImage icon;
 	public int playerOwnerID;
 	public int xPos;
 	public int yPos;

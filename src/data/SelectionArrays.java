@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class SelectionArrays {
 	
+	public static ArrayList<Point> controlPointCapture = new ArrayList<Point>();
+	
 	public static ArrayList<Point> mainMove = new ArrayList<Point>();
 	public static ArrayList<Point> mainAttack = new ArrayList<Point>();
 	public static ArrayList<Point> advancedMove = new ArrayList<Point>();
@@ -13,112 +15,60 @@ public class SelectionArrays {
 	
 	public static void fillArrays()
 	{
-		//FILL MAIN MOVE
+		mainMove = getCircularArray(1.5f);
+		mainAttack = getCircularArray(2.5f);
+
+		advancedMove = getCircularArray(3f);
+		advancedAttack = getCircularArray(2.5f);
 		
-		mainMove.add(new Point(-1, -1));
-		mainMove.add(new Point(-1, 0));
-		mainMove.add(new Point(-1, 1));
-		mainMove.add(new Point(0, -1));
-		mainMove.add(new Point(0, 1));
-		mainMove.add(new Point(1, -1));
-		mainMove.add(new Point(1, 0));
-		mainMove.add(new Point(1, 1));
+		howitzerMove = getCircularArray(1f);
+		howitzerAttack = getCircularArray(6.5f);
 		
-		//FILL MAIN ATTACK
-		
-		mainAttack.add(new Point(-1, -1));
-		mainAttack.add(new Point(-1, 0));
-		mainAttack.add(new Point(-1, 1));
-		mainAttack.add(new Point(0, -1));
-		mainAttack.add(new Point(0, 1));
-		mainAttack.add(new Point(1, -1));
-		mainAttack.add(new Point(1, 0));
-		mainAttack.add(new Point(1, 1));
-		mainAttack.add(new Point(-1, -2));
-		mainAttack.add(new Point(0, -2));
-		mainAttack.add(new Point(1, -2));
-		mainAttack.add(new Point(-2, -1));
-		mainAttack.add(new Point(-2, 0));
-		mainAttack.add(new Point(-2, 1));
-		mainAttack.add(new Point(2, -1));
-		mainAttack.add(new Point(2, 0));
-		mainAttack.add(new Point(2, 1));
-		mainAttack.add(new Point(-1, 2));
-		mainAttack.add(new Point(0, 2));
-		mainAttack.add(new Point(1, 2));
-		
-		//FILL ADVANCED MOVE
-		
-		advancedMove.add(new Point(-1, -1));
-		advancedMove.add(new Point(-1, 0));
-		advancedMove.add(new Point(-1, 1));
-		advancedMove.add(new Point(0, -1));
-		advancedMove.add(new Point(0, 1));
-		advancedMove.add(new Point(1, -1));
-		advancedMove.add(new Point(1, 0));
-		advancedMove.add(new Point(1, 1));
-		advancedMove.add(new Point(-1, -2));
-		advancedMove.add(new Point(0, -2));
-		advancedMove.add(new Point(1, -2));
-		advancedMove.add(new Point(-2, -1));
-		advancedMove.add(new Point(-2, 0));
-		advancedMove.add(new Point(-2, 1));
-		advancedMove.add(new Point(2, -1));
-		advancedMove.add(new Point(2, 0));
-		advancedMove.add(new Point(2, 1));
-		advancedMove.add(new Point(-1, 2));
-		advancedMove.add(new Point(0, 2));
-		advancedMove.add(new Point(1, 2));
-		advancedMove.add(new Point(-3, 0));
-		advancedMove.add(new Point(3, 0));
-		advancedMove.add(new Point(0, -3));
-		advancedMove.add(new Point(0, 3));
-		
-		//FILL ADVANCED ATTACK
-		
-		advancedAttack.add(new Point(-1, -1));
-		advancedAttack.add(new Point(-1, 0));
-		advancedAttack.add(new Point(-1, 1));
-		advancedAttack.add(new Point(0, -1));
-		advancedAttack.add(new Point(0, 1));
-		advancedAttack.add(new Point(1, -1));
-		advancedAttack.add(new Point(1, 0));
-		advancedAttack.add(new Point(1, 1));
-		advancedAttack.add(new Point(-1, -2));
-		advancedAttack.add(new Point(0, -2));
-		advancedAttack.add(new Point(1, -2));
-		advancedAttack.add(new Point(-2, -1));
-		advancedAttack.add(new Point(-2, 0));
-		advancedAttack.add(new Point(-2, 1));
-		advancedAttack.add(new Point(2, -1));
-		advancedAttack.add(new Point(2, 0));
-		advancedAttack.add(new Point(2, 1));
-		advancedAttack.add(new Point(-1, 2)); 
-		advancedAttack.add(new Point(0, 2));
-		advancedAttack.add(new Point(1, 2));
-		
-		//FILL HOWITZER MOVE
-		howitzerMove.add(new Point(0, -1));
-		howitzerMove.add(new Point(-1, 0));
-		howitzerMove.add(new Point(1, 0));
-		howitzerMove.add(new Point(0, 1));
-		
-		//FILL HOWITZER ATTACK
-		for(int i = -15; i < 16; i++)
+		controlPointCapture = getCircularArray(1.5f);
+	}
+	
+	//generate circular selection arrays
+	private static ArrayList<Point> getCircularArray(float x)
+	{
+		int pointsInside;
+		//x is the radius
+		ArrayList<Point> insidePositions = new ArrayList<Point>();
+		for(int i = (int) (0 - (x + 1)); i < (int)(x + 1); i++)
 		{
-			for(int j = -15; j < 16; j++)
+			for(int j = (int) (0 - (x + 1)); j < (int)(x + 1); j++)
 			{
-				if(i == 0 && j == 0)
+				pointsInside = 0;
+				if(Math.sqrt(Math.pow((i + 0.25), 2) + Math.pow((j - 0.25), 2)) <= x)
 				{
-					
+					pointsInside++;
 				}
-				else
+				if(Math.sqrt(Math.pow((i - 0.25), 2) + Math.pow((j - 0.25), 2)) <= x)
 				{
-					howitzerAttack.add(new Point(i, j));
+					pointsInside++;
+				}
+				if(Math.sqrt(Math.pow((i + 0.25), 2) + Math.pow((j + 0.25), 2)) <= x)
+				{
+					pointsInside++;
+				}
+				if(Math.sqrt(Math.pow((i - 0.25), 2) + Math.pow((j + 0.25), 2)) <= x)
+				{
+					pointsInside++;
+				}
+				
+				if(pointsInside > 1)
+				{
+					if(i == 0 && j == 0)
+					{
+						
+					}
+					else
+					{
+						insidePositions.add(new Point(i, j));
+					}
 				}
 			}
 		}
-		
+		return insidePositions;
 	}
 
 }
