@@ -60,10 +60,13 @@ public class Board {
 	{
 		//first player base
 		units.add(new BaseUnit(0, 3, 0));
-		//units.add(new HowitzerUnit(0, 4, 0));
+		units.add(new AdvancedUnit(0, 6, 7));
+		units.add(new HowitzerUnit(0, 4, 0));
 		//second player base
 		units.add(new BaseUnit(1, 3, 19));
-		//units.add(new HowitzerUnit(1, 4, 19));
+		units.add(new AdvancedUnit(1, 4, 12));
+		units.add(new HowitzerUnit(1, 10, 10));
+		
 	}
 	
 	public boolean validSelection(int inputX, int inputY, int mode)
